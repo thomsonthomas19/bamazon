@@ -61,15 +61,16 @@ function promptBam() {
         // get the information of the chosen item
         var chosenProduct;
         for (var i = 0; i < results.length; i++) {
-          if (results[i].id === answer.choice) {
+          // console.log(results);
+          if (results[i].id == answer.choice) {
             chosenProduct = results[i];
           }
         }
         // var prodQuantity = chosenProduct.stock_quantity;
         // determine if bid was high enough
         if (parseInt(chosenProduct.stock_quantity) > parseInt(answer.quantity)) {
-          // bid was high enough, so update db, let the user know, and start over
-          connection.query(
+          // there is enough stock, update database
+          db.query(
             "UPDATE products SET ? WHERE ?",
             [
               {
@@ -83,7 +84,7 @@ function promptBam() {
               if (error) throw err;
               console.log(`
               You have successfuly purchased ${answer.quantity} of ${chosenProduct.product_name}. 
-              At $${chosenProduct.price} per, your total comes out to ${(answer.quantity * chosenProduct.price)}.
+              At $${chosenProduct.price} per, your total comes out to $${(answer.quantity * chosenProduct.price)}.
               We hope you enjoy your purchase!
               Item will ship within 48 hours
               No refunds`);
